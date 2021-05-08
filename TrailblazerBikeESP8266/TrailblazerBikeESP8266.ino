@@ -201,29 +201,32 @@ void loop() {
       if (buttonState == HIGH) {
           ledState = !ledState;
       
-          // Send state to MOVE MAP FORWARD
-          HTTPClient http;
+         // --- HTTP CLIENT code
+          // Send state to MOVE MAP FORWARD IF led state = TRUE/ON
+          if(ledState == HIGH){
+            HTTPClient http;
 
-          String serverPath = serverName + "/forward";
+            String serverPath = serverName + "/forward";
       
-          // Your Domain name with URL path or IP address with path
-          http.begin(serverPath.c_str());
+            // Your Domain name with URL path or IP address with path
+            http.begin(serverPath.c_str());
 
-          String httpRequestData = "forward";
-          // Send HTTP GET request
-          int httpResponseCode = http.POST(httpRequestData);
+            String httpRequestData = "forward";
+            // Send HTTP GET request
+            int httpResponseCode = http.POST(httpRequestData);
       
-          if (httpResponseCode>0) {
-            Serial.print("HTTP Response code: ");
-            Serial.println(httpResponseCode);
-            String payload = http.getString();
-            Serial.println(payload);
-          } else {
-            Serial.print("Error code: ");
-            Serial.println(httpResponseCode);
+            if (httpResponseCode>0) {
+              Serial.print("HTTP Response code: ");
+              Serial.println(httpResponseCode);
+              String payload = http.getString();
+              Serial.println(payload);
+            } else {
+              Serial.print("Error code: ");
+              Serial.println(httpResponseCode);
+            }
+            // Free resources
+            http.end();
           }
-          // Free resources
-          http.end();
       
         }
  
